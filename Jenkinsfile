@@ -2,13 +2,18 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                git 'https://github.com/ajmalnaim8/devopsproject.git'
+                checkout([$class: 'GitSCM', 
+                          branches: [[name: '*/main']], 
+                          doGenerateSubmoduleConfigurations: false, 
+                          extensions: [], 
+                          submoduleCfg: [], 
+                          userRemoteConfigs: [[url: 'https://github.com/ajmalnaim8/devopsproject.git']]])
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build') {
             steps {
                 script {
                     dockerImage = docker.build("devopsproject:latest")
@@ -16,7 +21,7 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Test') {
             steps {
                 script {
                     dockerImage.inside {
