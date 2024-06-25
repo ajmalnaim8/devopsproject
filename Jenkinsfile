@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'git@github.com:ajmalnaim8/devopsproject.git'
+                git 'https://github.com/ajmalnaim8/devopsproject.git'
             }
         }
 
