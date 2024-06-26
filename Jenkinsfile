@@ -30,11 +30,11 @@ pipeline {
             steps {
                 script {
                     dockerImage.inside {
-                        // Create npm global and cache directories in Jenkins user's home directory
-                        sh 'mkdir -p /var/lib/jenkins/.npm-global'
-                        sh 'mkdir -p /var/lib/jenkins/.npm-cache'
+                        // Use the home directory of the Jenkins user in the container
+                        sh 'mkdir -p ~/.npm-global'
+                        sh 'mkdir -p ~/.npm-cache'
                         // Set environment variables for npm configuration
-                        withEnv(['NPM_CONFIG_PREFIX=/var/lib/jenkins/.npm-global', 'NPM_CONFIG_CACHE=/var/lib/jenkins/.npm-cache']) {
+                        withEnv(['NPM_CONFIG_PREFIX=~/.npm-global', 'NPM_CONFIG_CACHE=~/.npm-cache']) {
                             sh 'npm install'
                             sh 'npm test'
                         }
