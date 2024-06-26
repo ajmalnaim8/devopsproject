@@ -30,6 +30,7 @@ pipeline {
             steps {
                 script {
                     dockerImage.inside {
+                        sh 'npm install'
                         sh 'npm test'
                     }
                 }
