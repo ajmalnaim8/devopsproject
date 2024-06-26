@@ -13,7 +13,7 @@ pipeline {
                           doGenerateSubmoduleConfigurations: false,
                           extensions: [],
                           submoduleCfg: [],
-                          userRemoteConfigs: [[credentialsId: 'githubid',
+                          userRemoteConfigs: [[credentialsId: 'your-credentials-id',
                                                url: 'https://github.com/ajmalnaim8/devopsproject.git']]])
             }
         }
@@ -30,9 +30,11 @@ pipeline {
             steps {
                 script {
                     dockerImage.inside {
-                        sh 'mkdir -p ~/.npm-global'
-                        sh 'mkdir -p ~/.npm-cache'
-                        withEnv(['NPM_CONFIG_PREFIX=~/.npm-global', 'NPM_CONFIG_CACHE=~/.npm-cache']) {
+                        // Create npm global and cache directories in Jenkins user's home directory
+                        sh 'mkdir -p /var/lib/jenkins/.npm-global'
+                        sh 'mkdir -p /var/lib/jenkins/.npm-cache'
+                        // Set environment variables for npm configuration
+                        withEnv(['NPM_CONFIG_PREFIX=/var/lib/jenkins/.npm-global', 'NPM_CONFIG_CACHE=/var/lib/jenkins/.npm-cache']) {
                             sh 'npm install'
                             sh 'npm test'
                         }
