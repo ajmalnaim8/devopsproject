@@ -30,10 +30,12 @@ pipeline {
             steps {
                 script {
                     dockerImage.inside {
-                        sh 'npm config set prefix /home/jenkins/.npm-global --global'
-                        sh 'npm config set cache /home/jenkins/.npm-cache --global'
-                        sh 'npm install'
-                        sh 'npm test'
+                        sh 'mkdir -p ~/.npm-global'
+                        sh 'mkdir -p ~/.npm-cache'
+                        withEnv(['NPM_CONFIG_PREFIX=~/.npm-global', 'NPM_CONFIG_CACHE=~/.npm-cache']) {
+                            sh 'npm install'
+                            sh 'npm test'
+                        }
                     }
                 }
             }
