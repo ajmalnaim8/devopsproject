@@ -13,7 +13,7 @@ pipeline {
                           doGenerateSubmoduleConfigurations: false,
                           extensions: [],
                           submoduleCfg: [],
-                          userRemoteConfigs: [[credentialsId: 'your-credentials-id',
+                          userRemoteConfigs: [[credentialsId: 'githubid',
                                                url: 'https://github.com/ajmalnaim8/devopsproject.git']]])
             }
         }
@@ -30,6 +30,8 @@ pipeline {
             steps {
                 script {
                     dockerImage.inside {
+                        sh 'npm config set prefix /home/jenkins/.npm-global --global'
+                        sh 'npm config set cache /home/jenkins/.npm-cache --global'
                         sh 'npm install'
                         sh 'npm test'
                     }
