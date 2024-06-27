@@ -21,13 +21,7 @@ pipeline {
                 script {
                     // Test inside Docker container
                     dockerImage.inside {
-                        // Set npm to use a different directory
-                        sh 'npm config set prefix "~/.npm-global"'
-                        // Update PATH to include the new npm directory
-                        sh 'export PATH=~/.npm-global/bin:$PATH'
-                        // Install dependencies
                         sh 'npm install'
-                        // Run tests
                         sh 'npm test'
                     }
                 }
@@ -44,11 +38,7 @@ pipeline {
                     // Run Docker container from the latest image
                     sh "docker run -d --name ${CONTAINER_NAME} -p 3000:3000 ${DOCKER_IMAGE}"
 
-                    // Optional: Wait for the container to start
-                    sh "sleep 10"
 
-                    // Check container logs (optional)
-                    sh "docker logs ${CONTAINER_NAME}"
                 }
             }
         }
