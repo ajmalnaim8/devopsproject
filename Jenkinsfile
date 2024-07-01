@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "devopsproject:latest"
-        CONTAINER_NAME = "devopsproject-container"
     }
 
     stages {
@@ -11,7 +10,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image
-                    dockerImage = docker.build(env.DOCKER_IMAGE)
+                    sh 'docker-compose build'
                 }
             }
         }
@@ -20,10 +19,8 @@ pipeline {
             steps {
                 script {
                     // Test inside Docker container
-                    dockerImage.inside {
-                        sh 'npm install'
-                        sh 'npm test'
-                    }
+                    sh 'docker-compose run app npm install'
+                    sh 'docker-compose run app npm test'
                 }
             }
         }
@@ -31,14 +28,11 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Stop and remove existing container (if any)
-                    sh "docker stop ${CONTAINER_NAME} || true"
-                    sh "docker rm ${CONTAINER_NAME} || true"
+                    // Stop and remove existing containers (if any)
+                    sh 'docker-compose down'
 
-                    // Run Docker container from the latest image
-                    sh "docker run -d --name ${CONTAINER_NAME} -p 3000:3000 ${DOCKER_IMAGE}"
-
-
+                    // Run Docker containers from the latest image
+                    sh 'docker-compose up -d'
                 }
             }
         }
