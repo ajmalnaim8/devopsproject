@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    parameters {
-        choice(name: 'ENVIRONMENT', choices: ['linux', 'windows'], description: 'Choose the environment')
-    }
-
     environment {
         DOCKER_IMAGE = "devopsproject:latest"
     }
@@ -13,11 +9,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    if (params.ENVIRONMENT == 'linux') {
-                        sh 'docker-compose build'
-                    } else if (params.ENVIRONMENT == 'windows') {
-                        bat 'docker-compose build'
-                    }
+                    // Build Docker image
+                    sh 'docker-compose build'
                 }
             }
         }
@@ -25,13 +18,9 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    if (params.ENVIRONMENT == 'linux') {
-                        sh 'docker-compose run app npm install'
-                        sh 'docker-compose run app npm test'
-                    } else if (params.ENVIRONMENT == 'windows') {
-                        bat 'docker-compose run app npm install'
-                        bat 'docker-compose run app npm test'
-                    }
+                    // Test inside Docker container
+                    sh 'docker-compose run app npm install'
+                    sh 'docker-compose run app npm test'
                 }
             }
         }
@@ -39,13 +28,11 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    if (params.ENVIRONMENT == 'linux') {
-                        sh 'docker-compose down'
-                        sh 'docker-compose up -d'
-                    } else if (params.ENVIRONMENT == 'windows') {
-                        bat 'docker-compose down'
-                        bat 'docker-compose up -d'
-                    }
+                    // Stop and remove existing containers (if any)
+                    sh 'docker-compose down'
+
+                    // Run Docker containers from the latest image
+                    sh 'docker-compose up -d'
                 }
             }
         }
