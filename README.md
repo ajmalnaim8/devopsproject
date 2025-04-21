@@ -1,27 +1,27 @@
 # DevOps Project
 
-## í³˜ Description
+## ğŸ“˜ Description
 This project demonstrates a complete DevOps pipeline for deploying a web application using Jenkins, Docker, and Kubernetes. The goal is to automate the build, test, and deployment processes to improve delivery speed and reliability.
 
-## íº€ Features
+## ğŸš€ Features
 - CI/CD pipeline using Jenkins
 - Dockerized application
 - Kubernetes deployment
 - Infrastructure-as-Code approach
 
-## í» ï¸ Tech Stack
+## ğŸ› ï¸ Tech Stack
 - Jenkins
 - Docker
 - Kubernetes
 - Git
 - Shell scripting
 
-## í³¦ Folder Structure
+## ğŸ“¦ Folder Structure
 - `/jenkins/` â€“ Jenkins pipeline configuration and scripts
 - `/docker/` â€“ Dockerfile and related resources
 - `/kubernetes/` â€“ Deployment and service manifests for Kubernetes
 
-## í·ª How to Use
+## ğŸ§ª How to Use
 1. Clone the repo  
    ```bash
    git clone https://github.com/ajmalnaim8/devopsproject.git
